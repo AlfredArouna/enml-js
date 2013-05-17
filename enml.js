@@ -12,30 +12,6 @@
   }
 
   /**
-  * enmlHashToBodyHash
-  *  'bodyHash' returned from Evernote API is not equal to 'enmlHash' (hash string in the notes' content).
-  *  'enmlHash' is 'bodyHash' in ascii-hex form
-  * @param  { string } enmlHash - (Hash string in notes' content)
-  * @return string - bodyHash (Binary hash in Evernote API)
-  */
-  function BodyHashOfENMLHash(enmlHash){
-
-    var buffer = [];
-    for(var i =0 ; i<enmlHash.length; i += 2)
-      buffer.push( parseInt(enmlHash[i],16)*16 + parseInt(enmlHash[i+1],16));
-
-    var bodyHash = '';
-    for(i =0 ; i<buffer.length; i ++){
-      if(buffer[i] >= 128)
-      bodyHash += String.fromCharCode(65533);
-      else
-      bodyHash += String.fromCharCode(buffer[i]);
-    }
-
-    return bodyHash;
-  }
-
-  /**
   * ENMLOfPlainText
   * @param  { string } text (Plain)
   * @return string - ENML
@@ -93,18 +69,12 @@
   *	Convert ENML into HTML for showing in web browsers.
   *
   * @param { string } text (ENML)
-<<<<<<< HEAD
-  * @param	{ Map <string (hash), string (url) >, Optional } resources
-=======
   * @param	{ Map <string (hash), url (string) || { url: (string), title: (string) } >, Optional } resources
-  * @param { boolean } embedAllResources
->>>>>>> embed-medias
   * @return string - HTML
   */
-  function HTMLOfENML(text, resources, embedAllResources){
+  function HTMLOfENML(text, resources){
 
     resources = resources || {};
-    embedAllResources = embedAllResources || false;
     var writer = new XMLWriter();
 
     var parser = new SaxParser(function(cb) {
@@ -148,16 +118,15 @@
             if(attr[0] == 'height') height = attr[1];
           });
 
-          hash = BodyHashOfENMLHash(hash);
           var resource = resources[hash];
           var resourceUrl;
           var resourceTitle;
           if(resource) {
             resourceUrl = resource.url || resource;
             resourceTitle = resource.title || resource.url || '';
+          } else {
+            return;
           }
-
-          if((!embedAllResources && !type.match('image')) || !resource) return;
 
           if(type.match('image')) {
             writer.startElement('img');
