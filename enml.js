@@ -133,7 +133,14 @@
             writer.writeAttribute('title', resourceTitle);
 
           } else if(type.match('audio')) {
-            writer.writeElement('p', resourceTitle);
+            // write link to resource
+            writer.startElement('a');
+            writer.writeAttribute('href', resourceUrl);
+            writer.writeAttribute('class', 'en-res-link');
+            writer.text(resourceTitle);
+            writer.endElement();
+            writer.writeElement('br', '');
+
             writer.startElement('audio');
             writer.writeAttribute('controls', '');
             writer.text('Your browser does not support the audio tag.');
@@ -141,7 +148,14 @@
             mediaTagStarted = true;
 
           } else if(type.match('video')) {
-            writer.writeElement('p', resourceTitle);
+            // write link to resource
+            writer.startElement('a');
+            writer.writeAttribute('href', resourceUrl);
+            writer.writeAttribute('class', 'en-res-link');
+            writer.text(resourceTitle);
+            writer.endElement();
+            writer.writeElement('br', '');
+
             writer.startElement('video');
             writer.writeAttribute('controls', '');
             writer.text('Your browser does not support the video tag.');
@@ -196,6 +210,7 @@
           } else {
             writer.endElement();
           }
+          writer.text("\n");
 
         } else {
 
