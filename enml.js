@@ -137,6 +137,7 @@
             writer.startElement('a');
             writer.writeAttribute('href', resourceUrl);
             writer.writeAttribute('class', 'en-res-link');
+            writer.writeAttribute('target', '_blank');
             writer.text(resourceTitle);
             writer.endElement();
             writer.writeElement('br', '');
@@ -152,6 +153,7 @@
             writer.startElement('a');
             writer.writeAttribute('href', resourceUrl);
             writer.writeAttribute('class', 'en-res-link');
+            writer.writeAttribute('target', '_blank');
             writer.text(resourceTitle);
             writer.endElement();
             writer.writeElement('br', '');
@@ -170,6 +172,7 @@
           if(resourceUrl && linkTagStarted) {
             writer.writeAttribute('href', resourceUrl);
             writer.writeAttribute('class', 'en-res-link');
+            writer.writeAttribute('target', '_blank');
           } else {
             writer.writeAttribute('src', resourceUrl);
           }
