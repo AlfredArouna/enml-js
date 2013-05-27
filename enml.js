@@ -35,7 +35,21 @@
 
     lines.forEach(function(line) {
       writer.startElement('div');
-      writer.text(line.replace(/(\r\n|\n|\r)/,''));
+
+      line = line.replace(/(\r\n|\n|\r)/,'');
+
+      // add a new en-media element for resources
+      var matchArray;
+      if((matchArray = /^res:(.*):(.*)$/.exec(line))) {
+        writer.startElement('en-media');
+        writer.writeAttribute('type', matchArray[1]);
+        writer.writeAttribute('hash', matchArray[2]);
+        writer.endElement();
+
+      } else {
+        writer.text(line);
+      }
+
       writer.endElement();
 
       writer.text("\n");
